@@ -1,0 +1,52 @@
+import {FaCheck} from "react-icons/fa";
+
+export default function ExperienceSection() {
+    return (
+        <section className="font-poppins py-16 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    {/* Image Section */}
+                    <div className="relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                        <img
+                            src="/src/assets/03.jpg"
+                            alt="Équipe médicale au travail"
+                            className="w-full h-auto object-cover"
+                        />
+                    </div>
+
+                    {/* Text Content */}
+                    <div className="space-y-6">
+                        <h2 className="text-atoll-800 uppercase tracking-wider font-semibold">
+                            NOTRE ADN
+                        </h2>
+                        <h3 className="text-4xl font-bold text-gray-800">
+                            Une Référence de Confiance en PMA
+                        </h3>
+                        <p className="text-gray-600 text-lg max-w-2xl">
+                            Notre engagement envers l'excellence médicale, l'innovation et le confort de nos patients fait de nous votre destination de choix pour des soins exceptionnels. À la Clinique DR N.B, nous comprenons que chaque parcours de santé est unique, c'est pourquoi nous nous engageons à offrir des services personnalisés pour répondre à vos besoins spécifiques, assurant ainsi votre bien-être et contribuant à la réalisation de votre objectif de parentalité.
+                        </p>
+
+                        <button className="bg-atoll-800 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-atoll-700 transition-colors duration-300 transform hover:scale-105">
+                            Programmez une consultation
+                        </button>
+
+                        <ul className="space-y-4 mt-6">
+                            <li className="flex items-center space-x-3">
+                                <FaCheck className="text-atoll-800 flex-shrink-0" />
+                                <span className="text-gray-700">Savoir-faire & Expertise Médicale</span>
+                            </li>
+                            <li className="flex items-center space-x-3">
+                                <FaCheck className="text-atoll-800 flex-shrink-0" />
+                                <span className="text-gray-700">Laboratoires de Qualité Internationale</span>
+                            </li>
+                            <li className="flex items-center space-x-3">
+                                <FaCheck className="text-atoll-800 flex-shrink-0" />
+                                <span className="text-gray-700">Accompagnement Professionnel et Bienveillant</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}

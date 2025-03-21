@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import logoImage from '/src/assets/logo.png'; // Direct import for better build handling
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,9 +13,14 @@ export default function Navbar() {
                         <a href="/" className="flex items-center">
                             <img
                                 className="h-8 w-auto"
-                                src="/src/assets/logo.png"
+                                src={logoImage} // Using the imported image
                                 alt="Logo"
-                            />
+                                onError={(e) => {
+                                    console.error('Logo failed to load');
+                                    // Type assertion to tell TypeScript this is an HTMLImageElement
+                                    const imgElement = e.target as HTMLImageElement;
+                                    imgElement.src = '/logo.png'; // Now TypeScript knows src exists
+                                }}                            />
                         </a>
                     </div>
 
@@ -58,7 +64,7 @@ export default function Navbar() {
                         <a href="/about-us" className="text-white hover:text-black transition duration-300">
                             About Us
                         </a>
-                        <a  href="#services" className="text-white hover:text-black transition duration-300">
+                        <a href="#services" className="text-white hover:text-black transition duration-300">
                             Services
                         </a>
                         <a href="/contact" className="text-white hover:text-black transition duration-300">

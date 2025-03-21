@@ -1,4 +1,5 @@
-import {FaCheck} from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
+import experienceImage from '/src/assets/03.jpg';
 
 export default function ExperienceSection() {
     return (
@@ -8,9 +9,14 @@ export default function ExperienceSection() {
                     {/* Image Section */}
                     <div className="relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
                         <img
-                            src="/src/assets/03.jpg"
+                            src={experienceImage}
                             alt="Équipe médicale au travail"
                             className="w-full h-auto object-cover"
+                            onError={(e) => {
+                                console.error('Experience image failed to load');
+                                const imgElement = e.target as HTMLImageElement;
+                                imgElement.src = '/fallback-medical-team.jpg';
+                            }}
                         />
                     </div>
 

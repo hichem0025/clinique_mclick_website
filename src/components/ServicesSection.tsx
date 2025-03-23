@@ -1,137 +1,102 @@
+import pmaImage from '../assets/10.jpg';
+import digitalImage from '../assets/04.jpg';
+import chirurgieImage from '../assets/06.jpg';
+import oncologieImage from '../assets/12.jpg';
+import douleurImage from '../assets/08.jpg';
+import nutritionImage from '../assets/09.jpg';
+import { useEffect, useRef, useState } from 'react';
+
 export default function ServicesSection() {
+    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.unobserve(entry.target);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => {
+            if (sectionRef.current) {
+                observer.unobserve(sectionRef.current);
+            }
+        };
+    }, []);
+
     const services = [
         {
             title: "Procréation Médicalement Assistée (PMA)",
             description: "Solutions complètes pour votre projet parental",
-            image: "/src/assets/10.jpg",
-            tag: "PMA",
-            subCategories: [
-                "FIV",
-                "ICSI/IMSI",
-                "Insémination Intra Utérine (IUI)",
-                "Vitrification des Embryons",
-                "Préservation de Fertilité",
-                "Congélation des Spermatozoïdes",
-                "Biopsie Testiculaire et Micro-TESE",
-                "Stem Cell et Thérapie Cellulaire",
-                "PRP",
-                "Cure de Varicocèle",
-                "Diagnostic Pré-Implantatoire (DPI)"
-            ]
+            image: pmaImage,
+            tag: "PMA"
         },
         {
             title: "Services en Ligne",
             description: "Gestion numérique de votre parcours médical",
-            image: "/src/assets/04.jpg",
-            tag: "DIGITAL",
-            subCategories: [
-                "Traitement à Distance",
-                "Dossier Médical Électronique",
-                "Consultations en Visioconférence",
-                "Résultats d'Analyses en Temps Réel",
-                "Connexion Portail Patients",
-                "Rendez-Vous en Ligne",
-                "FAQ en Ligne",
-                "Consignes et Recommandations"
-            ]
+            image: digitalImage,
+            tag: "DIGITAL"
         },
         {
             title: "Consultations",
             description: "Accompagnement personnalisé pour votre santé",
-            image: "/src/assets/05.jpg",
-            tag: "CONSULTATION",
-            subCategories: [
-                "Consultation en Gynécologie et Obstétrique",
-                "Consultation PMA",
-                "Consultation pour Thérapie de la Douleur",
-                "Consultation en Médecine Esthétique",
-                "Consultation en Nutrition et Psychosomatique"
-            ]
+            image: chirurgieImage,
+            tag: "CONSULTATION"
         },
         {
             title: "Laparoscopie/Hystéroscopie",
             description: "Techniques mini-invasives pour une récupération rapide",
-            image: "/src/assets/06.jpg",
-            tag: "CHIRURGIE",
-            subCategories: [
-                "Laparoscopie Diagnostique",
-                "Laparoscopie Opératoire",
-                "Hystéroscopie Diagnostique",
-                "Hystéroscopie Opératoire",
-                "Suivi Post-Intervention"
-            ]
+            image: chirurgieImage,
+            tag: "CHIRURGIE"
         },
         {
             title: "Oncologie Gynécologique",
             description: "Prise en charge globale des pathologies cancéreuses",
-            image: "/src/assets/12.jpg",
-            tag: "ONCOLOGIE",
-            subCategories: [
-                "Dépistage Précoce",
-                "Thérapies Ciblées",
-                "Suivi Post-Traitement",
-                "Support Psychologique",
-                "Traitements Innovants"
-            ]
+            image: oncologieImage,
+            tag: "ONCOLOGIE"
         },
         {
             title: "Médecine Esthétique",
             description: "Solutions innovantes pour votre bien-être",
-            image: "/src/assets/07.jpg",
-            tag: "ESTHÉTIQUE",
-            subCategories: [
-                "Soins Régénérants",
-                "Correction des Imperfections",
-                "Thérapies Anti-Âge",
-                "Médecine Préventive",
-                "Traitements Non-Invasifs"
-            ]
+            image: pmaImage,
+            tag: "ESTHÉTIQUE"
         },
         {
             title: "Thérapie de la Douleur",
             description: "Approches multidisciplinaires personnalisées",
-            image: "/src/assets/08.jpg",
-            tag: "DOULEUR",
-            subCategories: [
-                "Traitements Non-Invasifs",
-                "Gestion du Stress",
-                "Rééducation Fonctionnelle",
-                "Suivi Chronique",
-                "Thérapies Alternatives"
-            ]
+            image: douleurImage,
+            tag: "DOULEUR"
         },
         {
             title: "Nutrition & Psychosomatique",
             description: "Approche holistique de votre santé",
-            image: "/src/assets/09.jpg",
-            tag: "NUTRITION",
-            subCategories: [
-                "Bilan Métabolique",
-                "Programmes Personnalisés",
-                "Thérapie Comportementale",
-                "Ateliers Éducatifs",
-                "Suivi Psychologique"
-            ]
+            image: nutritionImage,
+            tag: "NUTRITION"
         },
         {
             title: "Ressources et Informations",
             description: "Accès à des ressources médicales et éducatives",
-            image: "/src/assets/11.jpg",
-            tag: "RESSOURCES",
-            subCategories: [
-                "Actualités Médicales",
-                "Événements et Ateliers",
-                "Guides Pratiques",
-                "Témoignages",
-                "Contact et Renseignements"
-            ]
+            image: chirurgieImage,
+            tag: "RESSOURCES"
         }
     ];
 
     return (
-        <section id="services" className="font-poppins py-16 bg-white">
+        <section
+            id="services"
+            ref={sectionRef}
+            className="font-poppins py-16 bg-white"
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
+                <div className={`text-center mb-16 transition-all duration-700 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <h2 className="text-3xl font-bold text-gray-800 mb-4">
                         Nos Domaines d'Expertise
                     </h2>
@@ -144,7 +109,8 @@ export default function ServicesSection() {
                     {services.map((service, index) => (
                         <div
                             key={index}
-                            className="relative bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden group"
+                            className={`relative bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden group transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                            style={{ transitionDelay: `${index * 100}ms` }}
                         >
                             {/* Image Container */}
                             <div className="h-48 relative overflow-hidden">
@@ -173,23 +139,9 @@ export default function ServicesSection() {
                                 <h3 className="text-xl font-semibold text-gray-800 mb-3">
                                     {service.title}
                                 </h3>
-                                <p className="text-gray-600 text-sm mb-4">
+                                <p className="text-gray-600 text-sm">
                                     {service.description}
                                 </p>
-
-                                {/* Subcategories */}
-                                <div className="border-t pt-4">
-                                    <div className="flex flex-wrap gap-2">
-                                        {service.subCategories.map((sub, idx) => (
-                                            <span
-                                                key={idx}
-                                                className="text-xs font-medium px-3 py-1 bg-gray-100 rounded-full text-gray-600"
-                                            >
-                                                {sub}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
                             </div>
 
                             {/* Hover Overlay */}

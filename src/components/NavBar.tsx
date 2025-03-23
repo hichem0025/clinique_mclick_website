@@ -61,13 +61,13 @@ export default function Navbar() {
                         <a href="/" className="text-white hover:text-black transition duration-300">
                             Accueil
                         </a>
-                        <a href="/about-us" className="text-white hover:text-black transition duration-300">
+                        <a href="#about-us" className="text-white hover:text-black transition duration-300">
                             About Us
                         </a>
                         <a href="#services" className="text-white hover:text-black transition duration-300">
                             Services
                         </a>
-                        <a href="/contact" className="text-white hover:text-black transition duration-300">
+                        <a href="#contact" className="text-white hover:text-black transition duration-300">
                             Contact
                         </a>
                     </div>
@@ -96,7 +96,7 @@ export default function Navbar() {
                                 Accueil
                             </a>
                             <a
-                                href="/about-us"
+                                href="#about-us"
                                 className="block px-4 py-2 text-white hover:text-black transition duration-300"
                                 onClick={() => setIsMenuOpen(false)}
                             >
@@ -110,7 +110,7 @@ export default function Navbar() {
                                 Services
                             </a>
                             <a
-                                href="/contact"
+                                href="#contact"
                                 className="block px-4 py-2 text-white hover:text-black transition duration-300"
                                 onClick={() => setIsMenuOpen(false)}
                             >

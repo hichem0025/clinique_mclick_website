@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import Navbar from "./components/NavBar.tsx";
 import Hero from "./components/Hero.tsx";
 import AboutUs from "./components/AboutUs.tsx";
@@ -9,19 +9,18 @@ import ContactSection from "./components/ContactSection.tsx";
 import Footer from "./components/Footer.tsx";
 
 function App() {
-
-  return (
-      <div>
-         <Navbar />
-          <Hero />
-          <AboutUs/>
-          <CardsSection />
-          <ExperienceSection />
-          <ServicesSection />
-          <ContactSection />
-          <Footer />
-      </div>
-)
+    return (
+        <div className="overflow-x-hidden">
+            <Navbar />
+            <Hero />
+            <AboutUs />
+            <CardsSection />
+            <ExperienceSection />
+            <ServicesSection />
+            <ContactSection />
+            <Footer />
+        </div>
+    );
 }
 
-export default App
+export default App;

@@ -6,7 +6,12 @@ import douleurImage from '../assets/08.jpg';
 import nutritionImage from '../assets/09.jpg';
 import { useEffect, useRef, useState } from 'react';
 
-export default function ServicesSection() {
+interface ServicesSectionProps {
+    id?: string;
+}
+
+
+export default function ServicesSection({ id = "services" }: ServicesSectionProps) {
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef(null);
 
@@ -91,7 +96,7 @@ export default function ServicesSection() {
 
     return (
         <section
-            id="services"
+            id={id}
             ref={sectionRef}
             className="font-poppins py-16 bg-white"
         >

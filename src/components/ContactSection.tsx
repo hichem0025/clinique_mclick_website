@@ -7,6 +7,10 @@ import { useEffect, useRef } from 'react';
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 
+
+interface ContactSectionProps {
+    id?: string;
+}
 // Fix for default marker icon issue in React-Leaflet
 const defaultIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
@@ -18,7 +22,8 @@ const defaultIcon = new L.Icon({
     shadowSize: [41, 41],
 });
 
-export default function ContactSection() {
+
+export default function ContactSection({ id = "contact" }: ContactSectionProps) {
     const position: [number, number] = [36.745594, 3.042951];
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
@@ -58,7 +63,7 @@ export default function ContactSection() {
     return (
         <section
             ref={sectionRef}
-            id="contact"
+            id={id}
             className="font-poppins py-16 bg-gray-50"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,9 +119,16 @@ export default function ContactSection() {
                             {/* Email Button */}
                             <a
                                 href="mailto:CliniqueDrNadjetteBouazza@gmail.com"
-                                className="mt-6 inline-block bg-atoll-800 text-white px-4 py-2 rounded-md transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-atoll-600"
+                                className="group relative inline-block overflow-hidden mt-6 px-4 py-2 text-base font-poppins rounded-md border border-atoll-800 text-atoll-800 bg-transparent transition-all duration-500 ease-in-out hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-atoll-600"
                             >
-                                Envoyer un email
+                                {/* Background fill effect with scale animation */}
+                                <span className="absolute inset-0 bg-atoll-800 transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-center"></span>
+                                {/* Shine effect */}
+                                <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-atoll-700 to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
+                                {/* Text */}
+                                <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
+        Envoyer un email
+    </span>
                             </a>
                         </motion.div>
                     </div>

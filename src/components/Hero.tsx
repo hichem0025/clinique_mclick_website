@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import {Link} from "react-router-dom";
 
 export default function Hero() {
     return (
@@ -36,8 +37,8 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.6 }}
                     className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
                 >
-                    <a
-                        href="/rendez-vous"
+                    <Link
+                        to="/rendez-vous"
                         className="group relative inline-block overflow-hidden px-6 py-3 text-base sm:text-lg font-medium font-poppins rounded-lg border border-white text-white bg-transparent transition-all duration-500 ease-in-out"
                     >
                         {/* Background fill effect with scale animation */}
@@ -48,7 +49,7 @@ export default function Hero() {
                         <span className="relative group-hover:text-atoll-950 transition-colors duration-300 ease-in-out">
         Prendre rendez-vous
     </span>
-                    </a>
+                    </Link>
 
 
 

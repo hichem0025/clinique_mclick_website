@@ -1,4 +1,5 @@
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Added for rapid navigation
 
 export default function Footer() {
     return (
@@ -30,19 +31,44 @@ export default function Footer() {
                         <h3 className="text-xl font-bold mb-4">Liens Rapides</h3>
                         <ul className="space-y-2">
                             <li>
-                                <a href="/" className="text-gray-300 hover:text-white transition duration-300">Accueil</a>
+                                <Link
+                                    to="/"
+                                    className="text-gray-300 hover:text-white transition duration-300"
+                                >
+                                    Accueil
+                                </Link>
                             </li>
                             <li>
-                                <a href="/about-us" className="text-gray-300 hover:text-white transition duration-300">About Us</a>
+                                <Link
+                                    to="/#about-us"
+                                    className="text-gray-300 hover:text-white transition duration-300"
+                                >
+                                    About Us
+                                </Link>
                             </li>
                             <li>
-                                <a href="#services" className="text-gray-300 hover:text-white transition duration-300">Services</a>
+                                <Link
+                                    to="/#services"
+                                    className="text-gray-300 hover:text-white transition duration-300"
+                                >
+                                    Services
+                                </Link>
                             </li>
                             <li>
-                                <a href="/contact" className="text-gray-300 hover:text-white transition duration-300">Contact</a>
+                                <Link
+                                    to="/#contact"
+                                    className="text-gray-300 hover:text-white transition duration-300"
+                                >
+                                    Contact
+                                </Link>
                             </li>
                             <li>
-                                <a href="/devis" className="text-gray-300 hover:text-white transition duration-300">Demander un Devis</a>
+                                <Link
+                                    to="/rendez-vous"
+                                    className="text-gray-300 hover:text-white transition duration-300"
+                                >
+                                   Prender un rendez-vous
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -52,19 +78,19 @@ export default function Footer() {
                         <h3 className="text-xl font-bold mb-4">Nos Services</h3>
                         <ul className="space-y-2">
                             <li>
-                                <a href="#" className="text-gray-300 hover:text-white transition duration-300">PMA</a>
+                                <a  className="text-gray-300 hover:text-white transition duration-300">PMA</a>
                             </li>
                             <li>
-                                <a href="#" className="text-gray-300 hover:text-white transition duration-300">Consultations</a>
+                                <a className="text-gray-300 hover:text-white transition duration-300">Consultations</a>
                             </li>
                             <li>
-                                <a href="#" className="text-gray-300 hover:text-white transition duration-300">Laparoscopie/Hystéroscopie</a>
+                                <a  className="text-gray-300 hover:text-white transition duration-300">Laparoscopie/Hystéroscopie</a>
                             </li>
                             <li>
-                                <a href="#" className="text-gray-300 hover:text-white transition duration-300">Oncologie Gynécologique</a>
+                                <a  className="text-gray-300 hover:text-white transition duration-300">Oncologie Gynécologique</a>
                             </li>
                             <li>
-                                <a href="#" className="text-gray-300 hover:text-white transition duration-300">Médecine Esthétique</a>
+                                <a  className="text-gray-300 hover:text-white transition duration-300">Médecine Esthétique</a>
                             </li>
                         </ul>
                     </div>
@@ -89,9 +115,11 @@ export default function Footer() {
                             </li>
                             <li className="flex items-start space-x-3">
                                 <FaEnvelope className="text-white mt-1 flex-shrink-0" />
-                                <a href="mailto:CliniqueDrNadjetteBouazza@gmail.com" className="text-gray-300 hover:text-white transition duration-300">
-                                    CliniqueDrNadjetteBouazza@gmail.com
-                                </a>
+                                <span className="text-gray-300">
+                                    <a href="mailto:CliniqueDrNadjetteBouazza@gmail.com" className="hover:text-white transition duration-300 break-all">
+                                        CliniqueDrNadjette<br />Bouazza@gmail.com
+                                    </a>
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -100,18 +128,10 @@ export default function Footer() {
 
             {/* Bottom Footer */}
             <div className="bg-atoll-900 py-4">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <p className="text-sm text-gray-400">
-                        &copy; {new Date().getFullYear()} Clinique DR N.B. Tous droits réservés.
+                        © {new Date().getFullYear()} Clinique DR N.B. Tous droits réservés.
                     </p>
-                    <div className="flex space-x-4 mt-4 md:mt-0">
-                        <a href="#" className="text-sm text-gray-400 hover:text-white transition duration-300">
-                            Politique de Confidentialité
-                        </a>
-                        <a href="#" className="text-sm text-gray-400 hover:text-white transition duration-300">
-                            Conditions d'Utilisation
-                        </a>
-                    </div>
                 </div>
             </div>
         </footer>

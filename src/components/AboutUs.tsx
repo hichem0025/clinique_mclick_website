@@ -2,7 +2,12 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
-export default function AboutUs() {
+
+interface AboutUsProps {
+    id?: string;
+}
+
+export default function AboutUs({ id = "about-us" }: AboutUsProps) {
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
@@ -19,6 +24,7 @@ export default function AboutUs() {
     return (
         <section
             ref={sectionRef}
+            id={id}
             className="max-w-7xl mx-auto px-6 py-16 relative overflow-hidden"
         >
             {/* Content */}

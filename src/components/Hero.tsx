@@ -37,11 +37,21 @@ export default function Hero() {
                     className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
                 >
                     <a
-                        href="/contact"
-                        className="px-6 py-3 text-base sm:text-lg font-medium font-poppins rounded-lg border border-white text-white hover:bg-white hover:text-black transition duration-300"
+                        href="/rendez-vous"
+                        className="group relative inline-block overflow-hidden px-6 py-3 text-base sm:text-lg font-medium font-poppins rounded-lg border border-white text-white bg-transparent transition-all duration-500 ease-in-out"
                     >
-                        Prendre rendez-vous
+                        {/* Background fill effect with scale animation */}
+                        <span className="absolute inset-0 bg-white transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-center"></span>
+                        {/* Shine effect */}
+                        <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
+                        {/* Text */}
+                        <span className="relative group-hover:text-atoll-950 transition-colors duration-300 ease-in-out">
+        Prendre rendez-vous
+    </span>
                     </a>
+
+
+
                 </motion.div>
             </div>
         </div>

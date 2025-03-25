@@ -89,13 +89,21 @@ export default function ExperienceSection() {
                             Notre engagement envers l'excellence médicale, l'innovation et le confort de nos patients fait de nous votre destination de choix pour des soins exceptionnels. À la Clinique DR N.B, nous comprenons que chaque parcours de santé est unique, c'est pourquoi nous nous engageons à offrir des services personnalisés pour répondre à vos besoins spécifiques, assurant ainsi votre bien-être et contribuant à la réalisation de votre objectif de parentalité.
                         </motion.p>
 
-                        <motion.button
-                            className="bg-atoll-800 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-atoll-700 transition-colors duration-300 transform hover:scale-105"
+                        <motion.a
+                            href="/rendez-vous"
+                            className="group relative inline-block overflow-hidden px-8 py-3 text-lg font-semibold font-poppins rounded-lg border border-atoll-800 text-atoll-800 bg-transparent transition-all duration-500 ease-in-out"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            Programmez une consultation
-                        </motion.button>
+                            {/* Background fill effect with scale animation */}
+                            <span className="absolute inset-0 bg-atoll-800 transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-center"></span>
+                            {/* Shine effect */}
+                            <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-atoll-700 to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
+                            {/* Text */}
+                            <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
+        Programmez une consultation
+    </span>
+                        </motion.a>
 
                         <motion.ul className="space-y-4 mt-6">
                             <motion.li

@@ -1,15 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logoImage from '/src/assets/logo.png';
+import { useTranslation } from 'react-i18next';
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
+    const { t, i18n } = useTranslation();
+    const [language, setLanguage] = useState(i18n.language); // Track language in state
 
-    // Close mobile menu when location changes
     useEffect(() => {
         setIsMenuOpen(false);
     }, [location]);
+
+    useEffect(() => {
+        setLanguage(i18n.language); // Update state when i18n language changes
+    }, [i18n.language]); // Dependency on i18n.language
+
+    const toggleLanguage = () => {
+        const newLanguage = language === 'fr' ? 'ar' : 'fr';
+        i18n.changeLanguage(newLanguage);
+    };
+
+    const getLanguageFlag = () => {
+        return language === 'fr' ? '🇫🇷' : '🇩🇿';
+    };
 
     return (
         <nav className="font-poppins bg-white/15 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50">
@@ -31,14 +46,15 @@ export default function Navbar() {
                                     imgElement.src = '/logo.png';
                                 }}
                             />
-                        </Link>                    </div>
+                        </Link>
+                    </div>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="text-atoll-900 hover:text-gray-700 transition duration-300"
-                            aria-label="Toggle menu"
+                            aria-label={t('Toggle menu')}
                         >
                             <svg
                                 className="h-6 w-6"
@@ -67,17 +83,29 @@ export default function Navbar() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-10 text-lg font-medium">
-                        <Link to="/" className="text-atoll-900 hover:text-gray-700 transition duration-300">
-                            Accueil
+                        <Link
+                            to="/"
+                            className="text-atoll-900 hover:text-gray-700 transition duration-300"
+                        >
+                            {t('Accueil')}
                         </Link>
-                        <Link to="/#about-us" className="text-atoll-900 hover:text-gray-700 transition duration-300">
-                            About Us
+                        <Link
+                            to="/#about-us"
+                            className="text-atoll-900 hover:text-gray-700 transition duration-300"
+                        >
+                            {t('About Us')}
                         </Link>
-                        <Link to="/#services" className="text-atoll-900 hover:text-gray-700 transition duration-300">
-                            Services
+                        <Link
+                            to="/#services"
+                            className="text-atoll-900 hover:text-gray-700 transition duration-300"
+                        >
+                            {t('Services')}
                         </Link>
-                        <Link to="/#contact" className="text-atoll-900 hover:text-gray-700 transition duration-300">
-                            Contact
+                        <Link
+                            to="/#contact"
+                            className="text-atoll-900 hover:text-gray-700 transition duration-300"
+                        >
+                            {t('Contact')}
                         </Link>
                     </div>
 
@@ -93,11 +121,18 @@ export default function Navbar() {
                             <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
                             {/* Button Text */}
                             <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
-        Prendre un Rendez-vous
-    </span>
+                {t('Prendre un Rendez-vous')}
+              </span>
                         </Link>
 
-                        <span className="text-atoll-900 text-lg font-medium">FR</span>
+                        {/* Language Switcher */}
+                        <button
+                            onClick={toggleLanguage}
+                            className="rounded-full h-8 w-8 flex items-center justify-center text-sm hover:bg-gray-100 transition"
+                            aria-label={t('Toggle Language')}
+                        >
+                            {getLanguageFlag()}
+                        </button>
                     </div>
                 </div>
 
@@ -110,28 +145,28 @@ export default function Navbar() {
                                 className="block px-4 py-2 text-atoll-900 hover:text-gray-700 transition duration-300"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                Accueil
+                                {t('Accueil')}
                             </Link>
                             <Link
                                 to="/#about-us"
                                 className="block px-4 py-2 text-atoll-900 hover:text-gray-700 transition duration-300"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                About Us
+                                {t('About Us')}
                             </Link>
                             <Link
                                 to="/#services"
                                 className="block px-4 py-2 text-atoll-900 hover:text-gray-700 transition duration-300"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                Services
+                                {t('Services')}
                             </Link>
                             <Link
                                 to="/#contact"
                                 className="block px-4 py-2 text-atoll-900 hover:text-gray-700 transition duration-300"
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                Contact
+                                {t('Contact')}
                             </Link>
                             <Link
                                 to="/rendez-vous"
@@ -141,11 +176,18 @@ export default function Navbar() {
                                 <span className="absolute inset-0 bg-atoll-900 transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-center"></span>
                                 <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
                                 <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
-                                    Prendre un Rendez-vous
-                                </span>
+                  {t('Prendre un Rendez-vous')}
+                </span>
                             </Link>
                             <div className="px-4 py-2 text-atoll-900">
-                                Langue: <span className="font-medium">FR</span>
+                                Langue:
+                                <button
+                                    onClick={toggleLanguage}
+                                    className="rounded-full h-8 w-8 flex items-center justify-center text-sm hover:bg-gray-100 transition"
+                                    aria-label={t('Toggle Language')}
+                                >
+                                    {getLanguageFlag()}
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,10 @@
-import { motion } from "framer-motion";
-import {Link} from "react-router-dom";
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Hero() {
+    const { t } = useTranslation();
+
     return (
         <div className="relative h-screen w-full">
             {/* Background Image */}
@@ -16,7 +19,8 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6 font-poppins tracking-wide leading-tight"
                 >
-                    Votre destination de confiance <br className="hidden sm:block" />en PMA et soins spécialisés
+                    {t('Votre destination de confiance en PMA et soins spécialisés')}
+                    <br className="hidden sm:block" />
                 </motion.h1>
 
                 {/* Description */}
@@ -26,8 +30,9 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="text-base sm:text-lg md:text-xl max-w-2xl md:max-w-3xl font-poppins tracking-wide leading-relaxed mb-6"
                 >
-                    Expertise médicale de classe mondiale alliant normes internationales et technologies de pointe,
-                    avec une approche humaine et personnalisée de votre parcours vers la parentalité.
+                    {t(
+                        'Expertise médicale de classe mondiale alliant normes internationales et technologies de pointe, avec une approche humaine et personnalisée de votre parcours vers la parentalité.',
+                    )}
                 </motion.p>
 
                 {/* Buttons */}
@@ -47,12 +52,9 @@ export default function Hero() {
                         <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
                         {/* Text */}
                         <span className="relative group-hover:text-atoll-950 transition-colors duration-300 ease-in-out">
-        Prendre rendez-vous
-    </span>
+              {t('Prendre rendez-vous')}
+            </span>
                     </Link>
-
-
-
                 </motion.div>
             </div>
         </div>

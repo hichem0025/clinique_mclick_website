@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const API_ENDPOINT = 'http://localhost:8080/api/ClinicRDV';
 
@@ -55,6 +56,7 @@ interface FormData {
 }
 
 export default function AppointmentForm() {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
         lastName: '',
@@ -70,7 +72,9 @@ export default function AppointmentForm() {
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -97,7 +101,7 @@ export default function AppointmentForm() {
                 console.error('API Error:', errorData);
                 setError(
                     errorData.title ||
-                    'An error occurred while submitting the form. Check the console.'
+                    'An error occurred while submitting the form. Check the console.',
                 );
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -121,7 +125,7 @@ export default function AppointmentForm() {
         } catch (err: any) {
             console.error('Submission error:', err);
             setError(
-                'Failed to submit the form. Please check your internet connection and try again.'
+                'Failed to submit the form. Please check your internet connection and try again.',
             );
         } finally {
             setSubmitting(false);
@@ -161,11 +165,12 @@ export default function AppointmentForm() {
                     className="text-center mb-12"
                 >
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 font-poppins">
-                        Prendre Rendez-vous
+                        {t('Prendre Rendez-vous')}
                     </h1>
                     <p className="text-gray-600 max-w-2xl mx-auto font-poppins">
-                        Prenez rendez-vous facilement avec nos spécialistes pour bénéficier de
-                        nos services personnalisés
+                        {t(
+                            'Prenez rendez-vous facilement avec nos spécialistes pour bénéficier de nos services personnalisés',
+                        )}
                     </p>
                 </motion.div>
 
@@ -192,11 +197,12 @@ export default function AppointmentForm() {
                             </svg>
                         </div>
                         <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                            Rendez-vous Confirmé
+                            {t('Rendez-vous Confirmé')}
                         </h3>
                         <p className="text-gray-600">
-                            Merci pour votre demande de rendez-vous. Nous vous contacterons
-                            prochainement pour confirmer.
+                            {t(
+                                'Merci pour votre demande de rendez-vous. Nous vous contacterons prochainement pour confirmer.',
+                            )}
                         </p>
                     </motion.div>
                 ) : (
@@ -208,9 +214,7 @@ export default function AppointmentForm() {
                         className="bg-white rounded-xl shadow-lg p-6 md:p-8"
                     >
                         {error && (
-                            <div className="text-red-500 mb-4 p-2 bg-red-100 rounded">
-                                {error}
-                            </div>
+                            <div className="text-red-500 mb-4 p-2 bg-red-100 rounded">{error}</div>
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <motion.div variants={itemVariants}>
@@ -218,7 +222,7 @@ export default function AppointmentForm() {
                                     htmlFor="firstName"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    Prénom *
+                                    {t('Prénom *')}
                                 </label>
                                 <input
                                     type="text"
@@ -236,7 +240,7 @@ export default function AppointmentForm() {
                                     htmlFor="lastName"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    Nom *
+                                    {t('Nom *')}
                                 </label>
                                 <input
                                     type="text"
@@ -250,11 +254,8 @@ export default function AppointmentForm() {
                             </motion.div>
 
                             <motion.div variants={itemVariants}>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                    Email *
+                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                    {t('Email *')}
                                 </label>
                                 <input
                                     type="email"
@@ -268,11 +269,8 @@ export default function AppointmentForm() {
                             </motion.div>
 
                             <motion.div variants={itemVariants}>
-                                <label
-                                    htmlFor="phone"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                    Téléphone *
+                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                                    {t('Téléphone *')}
                                 </label>
                                 <input
                                     type="tel"
@@ -290,7 +288,7 @@ export default function AppointmentForm() {
                                     htmlFor="service"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    Service *
+                                    {t('Service *')}
                                 </label>
                                 <div className="relative">
                                     <select
@@ -301,7 +299,7 @@ export default function AppointmentForm() {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-atoll-500 focus:border-atoll-500 transition-colors appearance-none"
                                     >
-                                        <option value="">Sélectionnez un service</option>
+                                        <option value="">{t('Sélectionnez un service')}</option>
                                         {services.map((service, index) => (
                                             <option key={index} value={service.tag}>
                                                 {service.title}
@@ -321,11 +319,8 @@ export default function AppointmentForm() {
                             </motion.div>
 
                             <motion.div variants={itemVariants}>
-                                <label
-                                    htmlFor="date"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                    Date *
+                                <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+                                    {t('Date *')}
                                 </label>
                                 <input
                                     type="date"
@@ -340,11 +335,8 @@ export default function AppointmentForm() {
                             </motion.div>
 
                             <motion.div variants={itemVariants}>
-                                <label
-                                    htmlFor="time"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                    Heure *
+                                <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1">
+                                    {t('Heure *')}
                                 </label>
                                 <select
                                     id="time"
@@ -354,7 +346,7 @@ export default function AppointmentForm() {
                                     required
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-atoll-500 focus:border-atoll-500 transition-colors appearance-none"
                                 >
-                                    <option value="">Sélectionnez une heure</option>
+                                    <option value="">{t('Sélectionnez une heure')}</option>
                                     <option value="09:00">09:00</option>
                                     <option value="09:30">09:30</option>
                                     <option value="10:00">10:00</option>
@@ -384,7 +376,7 @@ export default function AppointmentForm() {
                                     htmlFor="message"
                                     className="block text-sm font-medium text-gray-700 mb-1"
                                 >
-                                    Message (Facultatif)
+                                    {t('Message (Facultatif)')}
                                 </label>
                                 <textarea
                                     id="message"
@@ -393,7 +385,7 @@ export default function AppointmentForm() {
                                     onChange={handleChange}
                                     rows={4}
                                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-atoll-500 focus:border-atoll-500 transition-colors"
-                                    placeholder="Informations complémentaires sur votre consultation..."
+                                    placeholder={t('Informations complémentaires sur votre consultation...')}
                                 ></textarea>
                             </motion.div>
                         </div>
@@ -428,10 +420,10 @@ export default function AppointmentForm() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    Traitement en cours...
+                                        {t('Traitement en cours...')}
                   </span>
                                 ) : (
-                                    'Prendre Rendez-vous'
+                                    t('Prendre Rendez-vous')
                                 )}
                             </button>
                         </motion.div>

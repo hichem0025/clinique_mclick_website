@@ -1,11 +1,18 @@
-import { FaUserMd, FaMicroscope, FaClinicMedical, FaMicrochip, FaHandsHelping } from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import {
+    FaUserMd,
+    FaMicroscope,
+    FaClinicMedical,
+    FaMicrochip,
+    FaHandsHelping,
+} from 'react-icons/fa';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function CardsSection() {
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+    const { t } = useTranslation();
 
     // Animation variants for the container
     const containerVariants = {
@@ -14,9 +21,9 @@ export default function CardsSection() {
             opacity: 1,
             transition: {
                 staggerChildren: 0.1,
-                delayChildren: 0.1
-            }
-        }
+                delayChildren: 0.1,
+            },
+        },
     };
 
     // Simple fade-in animation for cards
@@ -28,22 +35,19 @@ export default function CardsSection() {
             opacity: 1,
             transition: {
                 duration: 0.5,
-                ease: "easeInOut"
-            }
-        }
+                ease: 'easeInOut',
+            },
+        },
     };
 
     return (
-        <section
-            ref={sectionRef}
-            className="font-poppins py-20 bg-white relative overflow-hidden"
-        >
+        <section ref={sectionRef} className="font-poppins py-20 bg-white relative overflow-hidden">
             <div className="mx-auto px-4 sm:px-8 lg:px-16 relative z-10">
                 <motion.div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-5 gap-6"
                     variants={containerVariants}
                     initial="hidden"
-                    animate={isInView ? "visible" : "hidden"}
+                    animate={isInView ? 'visible' : 'hidden'}
                 >
                     {/* Carte 1 - Savoir-faire */}
                     <motion.div
@@ -55,10 +59,12 @@ export default function CardsSection() {
                         </div>
                         <div className="mt-16">
                             <h3 className="text-lg font-bold text-atoll-800 mb-3">
-                                Savoir-faire &amp; Expertise Médicale
+                                {t('Savoir-faire & Expertise Médicale')}
                             </h3>
                             <p className="text-gray-600 text-sm leading-snug">
-                                &laquo; Spécialistes en santé reproductive, notre équipe allie expertise médicale et approche humaine pour votre parcours PMA &raquo;
+                                {t(
+                                    '"Spécialistes en santé reproductive, notre équipe allie expertise médicale et approche humaine pour votre parcours PMA"',
+                                )}
                             </p>
                         </div>
                     </motion.div>
@@ -73,10 +79,12 @@ export default function CardsSection() {
                         </div>
                         <div className="mt-16">
                             <h3 className="text-lg font-bold text-atoll-800 mb-3">
-                                Laboratoires de Qualité
+                                {t('Laboratoires de Qualité')}
                             </h3>
                             <p className="text-gray-600 text-sm leading-snug">
-                                Plateaux techniques certifiés ISO avec technologies de pointe pour des analyses et procédures PMA selon les normes internationales
+                                {t(
+                                    'Plateaux techniques certifiés ISO avec technologies de pointe pour des analyses et procédures PMA selon les normes internationales',
+                                )}
                             </p>
                         </div>
                     </motion.div>
@@ -91,10 +99,12 @@ export default function CardsSection() {
                         </div>
                         <div className="mt-16">
                             <h3 className="text-lg font-bold text-atoll-800 mb-3">
-                                Suivi Médical Exceptionnel
+                                {t('Suivi Médical Exceptionnel')}
                             </h3>
                             <p className="text-gray-600 text-sm leading-snug">
-                                &laquo; Accompagnement sur mesure avec bilans réguliers et suivi 24h/24 via votre espace patient digital sécurisé &raquo;
+                                {t(
+                                    '"Accompagnement sur mesure avec bilans réguliers et suivi 24h/24 via votre espace patient digital sécurisé"',
+                                )}
                             </p>
                         </div>
                     </motion.div>
@@ -109,10 +119,12 @@ export default function CardsSection() {
                         </div>
                         <div className="mt-16">
                             <h3 className="text-lg font-bold text-atoll-800 mb-3">
-                                Technologie de Pointe
+                                {t('Technologie de Pointe')}
                             </h3>
                             <p className="text-gray-600 text-sm leading-snug">
-                                &laquo; Dispositifs médicaux dernier cri pour une prise en charge optimale, combinant précision technologique et sécurité absolue &raquo;
+                                {t(
+                                    '"Dispositifs médicaux dernier cri pour une prise en charge optimale, combinant précision technologique et sécurité absolue"',
+                                )}
                             </p>
                         </div>
                     </motion.div>
@@ -127,10 +139,12 @@ export default function CardsSection() {
                         </div>
                         <div className="mt-16">
                             <h3 className="text-lg font-bold text-atoll-800 mb-3">
-                                Accompagnement Bienveillant
+                                {t('Accompagnement Bienveillant')}
                             </h3>
                             <p className="text-gray-600 text-sm leading-snug">
-                                &laquo; Soutien psychologique et écoute active tout au long de votre parcours, avec transparence totale et disponibilité permanente &raquo;
+                                {t(
+                                    '"Soutien psychologique et écoute active tout au long de votre parcours, avec transparence totale et disponibilité permanente"',
+                                )}
                             </p>
                         </div>
                     </motion.div>

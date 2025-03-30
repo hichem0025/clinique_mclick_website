@@ -4,8 +4,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useEffect, useRef } from 'react';
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 
 interface ContactSectionProps {
@@ -27,6 +27,7 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
     const position: [number, number] = [36.745594, 3.042951];
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+    const { t } = useTranslation();
 
     // Animation variants
     const titleVariants = {
@@ -76,7 +77,7 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
                             variants={titleVariants}
                             className="text-3xl font-bold text-gray-800 mb-6"
                         >
-                            Nous Contacter
+                            {t('Nous Contacter')}
                         </motion.h2>
 
                         <motion.div
@@ -86,7 +87,7 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
                             className="space-y-6"
                         >
                             <p className="text-gray-600 leading-relaxed">
-                                Notre équipe est là pour vous accompagner et répondre à vos interrogations concernant nos services ou pour organiser votre prochaine consultation.
+                                {t('Notre équipe est là pour vous accompagner et répondre à vos interrogations concernant nos services ou pour organiser votre prochaine consultation.')}
                             </p>
 
                             <div className="space-y-6">
@@ -94,7 +95,7 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
                                 <div className="flex items-start space-x-4">
                                     <FaMapMarkerAlt className="text-atoll-800 mt-1 flex-shrink-0" />
                                     <div>
-                                        <h3 className="text-lg font-semibold text-gray-800">Adresse</h3>
+                                        <h3 className="text-lg font-semibold text-gray-800">{t('Adresse')}</h3>
                                         <p className="text-gray-600">
                                             06 Rue Timgad, Seconde Placette<br />
                                             Hydra, Alger
@@ -106,7 +107,7 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
                                 <div className="flex items-start space-x-4">
                                     <FaPhone className="text-atoll-800 mt-1 flex-shrink-0" />
                                     <div>
-                                        <h3 className="text-lg font-semibold text-gray-800">Téléphone</h3>
+                                        <h3 className="text-lg font-semibold text-gray-800">{t('Téléphone')}</h3>
                                         <div className="text-gray-600 space-y-1">
                                             <a href="tel:0550707066" className="block hover:text-atoll-800">0550 70 70 66</a>
                                             <a href="tel:0541486012" className="block hover:text-atoll-800">0541 48 60 12</a>
@@ -127,8 +128,8 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
                                 <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-atoll-700 to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
                                 {/* Text */}
                                 <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
-        Envoyer un email
-    </span>
+                                    {t('Envoyer un email')}
+                                </span>
                             </a>
                         </motion.div>
                     </div>
@@ -154,9 +155,9 @@ export default function ContactSection({ id = "contact" }: ContactSectionProps) 
                             <Marker position={position} icon={defaultIcon}>
                                 <Popup>
                                     <div className="text-sm font-poppins">
-                                        <strong>Clinique DR N.B</strong><br />
+                                        <strong>{t('Clinique DR N.B')}</strong><br />
                                         06 Rue Timgad<br />
-                                        Seconde Placette, Hydra
+                                        {t('Seconde Placette, Hydra')}
                                     </div>
                                 </Popup>
                             </Marker>

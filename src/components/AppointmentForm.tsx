@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-const API_ENDPOINT = 'http://localhost:8080/api/ClinicRDV';
+const API_ENDPOINT = 'https://api-mclickrdv-dev-002-main-git.azurewebsites.net/api/ClinicRDV';
 
 const services = [
     {

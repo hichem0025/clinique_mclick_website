@@ -55,6 +55,16 @@ interface FormData {
     message: string;
 }
 
+// Available time slots
+const timeSlots = [
+    '09:00', '09:30',
+    '10:00', '10:30',
+    '11:00', '11:30',
+    '14:00', '14:30',
+    '15:00', '15:30',
+    '16:00', '16:30'
+];
+
 export default function AppointmentForm() {
     const { t } = useTranslation();
     const [formData, setFormData] = useState<FormData>({
@@ -79,6 +89,13 @@ export default function AppointmentForm() {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
+        }));
+    };
+
+    const handleTimeSlotClick = (time: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            time: time,
         }));
     };
 
@@ -334,41 +351,31 @@ export default function AppointmentForm() {
                                 />
                             </motion.div>
 
-                            <motion.div variants={itemVariants}>
-                                <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1">
+                            <motion.div variants={itemVariants} className="md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
                                     {t('Heure *')}
                                 </label>
-                                <select
-                                    id="time"
-                                    name="time"
-                                    value={formData.time}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-atoll-500 focus:border-atoll-500 transition-colors appearance-none"
-                                >
-                                    <option value="">{t('Sélectionnez une heure')}</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="09:30">09:30</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="10:30">10:30</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="11:30">11:30</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="14:30">14:30</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="15:30">15:30</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="16:30">16:30</option>
-                                </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg
-                                        className="fill-current h-4 w-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                    </svg>
+                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                                    {timeSlots.map((slot) => (
+                                        <button
+                                            key={slot}
+                                            type="button"
+                                            onClick={() => handleTimeSlotClick(slot)}
+                                            className={`py-2 px-3 rounded-lg border transition-colors ${
+                                                formData.time === slot
+                                                    ? 'bg-atoll-500 text-white border-atoll-600'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            {slot}
+                                        </button>
+                                    ))}
                                 </div>
+                                {formData.time && (
+                                    <p className="mt-2 text-sm text-gray-500">
+                                        {t('Heure sélectionnée')}: {formData.time}
+                                    </p>
+                                )}
                             </motion.div>
 
                             <motion.div variants={itemVariants} className="md:col-span-2">
@@ -393,35 +400,35 @@ export default function AppointmentForm() {
                         <motion.div variants={itemVariants} className="mt-8 flex justify-center">
                             <button
                                 type="submit"
-                                disabled={submitting}
+                                disabled={submitting || !formData.time}
                                 className={`px-8 py-3 rounded-lg text-white font-medium transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-atoll-600 to-atoll-800 hover:from-atoll-700 hover:to-atoll-900 ${
-                                    submitting ? 'opacity-75 cursor-not-allowed' : ''
+                                    submitting || !formData.time ? 'opacity-75 cursor-not-allowed' : ''
                                 }`}
                             >
                                 {submitting ? (
                                     <span className="flex items-center">
-                    <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                      <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                      ></circle>
-                      <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
+                                        <svg
+                                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
+                                        </svg>
                                         {t('Traitement en cours...')}
-                  </span>
+                                    </span>
                                 ) : (
                                     t('Prendre Rendez-vous')
                                 )}

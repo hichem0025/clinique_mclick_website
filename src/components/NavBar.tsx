@@ -7,15 +7,15 @@ export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
     const { t, i18n } = useTranslation();
-    const [language, setLanguage] = useState(i18n.language); // Track language in state
+    const [language, setLanguage] = useState(i18n.language);
 
     useEffect(() => {
         setIsMenuOpen(false);
     }, [location]);
 
     useEffect(() => {
-        setLanguage(i18n.language); // Update state when i18n language changes
-    }, [i18n.language]); // Dependency on i18n.language
+        setLanguage(i18n.language);
+    }, [i18n.language]);
 
     const toggleLanguage = () => {
         const newLanguage = language === 'fr' ? 'ar' : 'fr';
@@ -30,16 +30,19 @@ export default function Navbar() {
         <nav className="font-poppins bg-white/15 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
-                    {/* Logo */}
-                    <div className="flex-shrink-0">
+                    {/* Logo with floating effect */}
+                    <div className="flex-shrink-0 relative">
                         <Link
                             to="/"
-                            className="flex items-center hover:scale-110 transition-transform duration-300"
+                            className="flex items-center transform translate-y-2 hover:translate-y-1 transition-all duration-300"
                         >
                             <img
-                                className="h-8 w-auto"
+                                className="h-12 w-auto sm:h-18 drop-shadow-lg"
                                 src={logoImage}
                                 alt="Logo"
+                                style={{
+                                    filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))',
+                                }}
                                 onError={(e) => {
                                     console.error('Logo failed to load');
                                     const imgElement = e.target as HTMLImageElement;
@@ -115,17 +118,13 @@ export default function Navbar() {
                             to="/rendez-vous"
                             className="group relative inline-block overflow-hidden px-4 py-2 text-sm sm:text-base font-medium font-poppins rounded-md border border-atoll-900 text-atoll-900 bg-transparent transition-all duration-500 ease-in-out"
                         >
-                            {/* Background fill effect with scale animation */}
                             <span className="absolute inset-0 bg-atoll-900 transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-center"></span>
-                            {/* Shine effect */}
                             <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
-                            {/* Button Text */}
                             <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
-                {t('Prendre un Rendez-vous')}
-              </span>
+                                {t('Prendre un Rendez-vous')}
+                            </span>
                         </Link>
 
-                        {/* Language Switcher */}
                         <button
                             onClick={toggleLanguage}
                             className="rounded-full h-8 w-8 flex items-center justify-center text-sm hover:bg-gray-100 transition"
@@ -176,8 +175,8 @@ export default function Navbar() {
                                 <span className="absolute inset-0 bg-atoll-900 transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] origin-center"></span>
                                 <span className="absolute inset-0 opacity-0 group-hover:opacity-30 bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 transition-opacity duration-300 delay-100"></span>
                                 <span className="relative group-hover:text-white transition-colors duration-300 ease-in-out">
-                  {t('Prendre un Rendez-vous')}
-                </span>
+                                    {t('Prendre un Rendez-vous')}
+                                </span>
                             </Link>
                             <div className="px-4 py-2 text-atoll-900">
                                 Langue:

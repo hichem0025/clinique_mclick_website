@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import pmaImage from '../assets/10.jpg';
 import digitalImage from '../assets/04.jpg';
 import chirurgieImage from '../assets/06.jpg';
@@ -113,8 +114,9 @@ export default function ServicesSection({ id = 'services' }: ServicesSectionProp
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {services.map((service, index) => (
-                        <div
+                        <Link
                             key={index}
+                            to={`/services/${service.tag}`}
                             className={`relative bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden group transform ${
                                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                             }`}
@@ -150,8 +152,8 @@ export default function ServicesSection({ id = 'services' }: ServicesSectionProp
                                                                         : 'bg-gradient-to-r from-gray-600 to-gray-800'
                                     }`}
                                 >
-                  {service.tag}
-                </span>
+                                    {service.tag}
+                                </span>
                             </div>
 
                             {/* Content */}
@@ -162,7 +164,7 @@ export default function ServicesSection({ id = 'services' }: ServicesSectionProp
 
                             {/* Hover Overlay */}
                             <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

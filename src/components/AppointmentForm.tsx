@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-const API_ENDPOINT = 'https://api-mclickrdv-dev-002-main-git.azurewebsites.net/api/ClinicRDV';
+const API_BASE = 'https://api-mclickrdv-dev-002-main-git.azurewebsites.net'; // Changed from 0.0.0.0 to localhost
+const API_ENDPOINT = `${API_BASE}/api/ClinicRDV`;
+const AGENDA_ENDPOINT = `${API_BASE}/api/v1/Agenda/medecin/e1d5d26e-ee54-4cd7-8a6c-ac4c354b32b4`;
+const TAKEN_SLOTS_ENDPOINT = `${API_BASE}/api/v1/Agenda/agenda`;
+
+// IDs to use for appointments (can be changed later)
+const DOCTOR_ID = 'e1d5d26e-ee54-4cd7-8a6c-ac4c354b32b4';
+const AGENDA_ID = '67f7d954f27ed8c3cdff8b68';
+const TYPE_RDV_ID = '67f3e32455357143c25247eb';
 
 const services = [
     {
@@ -43,7 +51,6 @@ const services = [
     },
 ];
 
-// Define the type for the form data
 interface FormData {
     firstName: string;
     lastName: string;
@@ -55,15 +62,19 @@ interface FormData {
     message: string;
 }
 
-// Available time slots
-const timeSlots = [
-    '09:00', '09:30',
-    '10:00', '10:30',
-    '11:00', '11:30',
-    '14:00', '14:30',
-    '15:00', '15:30',
-    '16:00', '16:30'
-];
+interface Agenda {
+    id_agenda: string;
+    denomination: string;
+    description: string;
+    couleur: number;
+    isVisiblePatient: boolean;
+    medecinIdOwner: string;
+    agendaAccess: any[];
+    dateDebut: string;
+    dateFin: string;
+    duree: string;
+    medecinName: string | null;
+}
 
 export default function AppointmentForm() {
     const { t } = useTranslation();
@@ -81,22 +92,134 @@ export default function AppointmentForm() {
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
+    const [takenTimeSlots, setTakenTimeSlots] = useState<string[]>([]);
+    const [loadingSlots, setLoadingSlots] = useState(true);
+
+    useEffect(() => {
+        const fetchAgenda = async () => {
+            try {
+                const response = await fetch(AGENDA_ENDPOINT, {
+                    headers: {
+                        'accept': 'text/plain'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch agenda');
+                }
+
+                const data: Agenda[] = await response.json();
+                if (data.length > 0) {
+                    const agenda = data[0];
+                    const slots = generateTimeSlots(agenda);
+                    setAvailableTimeSlots(slots);
+                }
+            } catch (error) {
+                console.error('Error fetching agenda:', error);
+                setError('Failed to load available time slots');
+            } finally {
+                setLoadingSlots(false);
+            }
+        };
+
+        fetchAgenda();
+    }, []);
+
+    // Fetch taken slots when date changes
+    useEffect(() => {
+        if (!formData.date) return;
+
+        const fetchTakenSlots = async () => {
+            try {
+                setLoadingSlots(true);
+                const response = await fetch(
+                    `${TAKEN_SLOTS_ENDPOINT}/${AGENDA_ID}/taken-slots?date=${formData.date}`,
+                    {
+                        headers: {
+                            'accept': 'text/plain'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch taken slots');
+                }
+
+                const takenSlots: string[] = await response.json();
+                setTakenTimeSlots(takenSlots);
+
+                // Reset selected time if it's now taken
+                if (formData.time && takenSlots.includes(formData.time)) {
+                    setFormData(current => ({
+                        ...current,
+                        time: ''
+                    }));
+                }
+            } catch (error) {
+                console.error('Error fetching taken slots:', error);
+                setError('Failed to load taken time slots');
+            } finally {
+                setLoadingSlots(false);
+            }
+        };
+
+        fetchTakenSlots();
+    }, [formData.date]);
+
+    const generateTimeSlots = (agenda: Agenda): string[] => {
+        const slots: string[] = [];
+        const [startHour, startMinute] = agenda.dateDebut.split(':').map(Number);
+        const [endHour, endMinute] = agenda.dateFin.split(':').map(Number);
+        const [durationHour, durationMinute] = agenda.duree.split(':').map(Number);
+
+        let currentHour = startHour;
+        let currentMinute = startMinute;
+
+        while (
+            currentHour < endHour ||
+            (currentHour === endHour && currentMinute < endMinute)
+            ) {
+            // Format the time slot
+            const timeSlot = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+            slots.push(timeSlot);
+
+            // Add the duration
+            currentHour += durationHour;
+            currentMinute += durationMinute;
+
+            // Handle minute overflow
+            if (currentMinute >= 60) {
+                currentHour += Math.floor(currentMinute / 60);
+                currentMinute = currentMinute % 60;
+            }
+        }
+
+        return slots;
+    };
+
+    const isSlotTaken = (slot: string): boolean => {
+        return takenTimeSlots.includes(slot);
+    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
     ) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
+
+        setFormData(current => ({
+            ...current,
             [name]: value,
         }));
     };
 
     const handleTimeSlotClick = (time: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            time: time,
-        }));
+        if (!isSlotTaken(time)) {
+            setFormData(current => ({
+                ...current,
+                time: time,
+            }));
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -105,12 +228,38 @@ export default function AppointmentForm() {
         setError(null);
 
         try {
+            // Format date and time for API
+            const dateObj = new Date(formData.date);
+            const [hours, minutes] = formData.time.split(':').map(Number);
+
+            dateObj.setHours(hours, minutes, 0, 0);
+            const formattedDateTime = dateObj.toISOString();
+
+            // Format data according to API requirements
+            const appointmentData = {
+                _id: null,
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                phone: formData.phone,
+                service: formData.service,
+                date: formattedDateTime,  // ISO date format with the selected time
+                time: formData.time,      // Keep original time format as well
+                message: formData.message,
+                doctorId: DOCTOR_ID,
+                agendaId: AGENDA_ID,
+                typeRdvId: TYPE_RDV_ID
+            };
+
+            console.log('Sending appointment data:', appointmentData);
+
             const response = await fetch(API_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'accept': '*/*'
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(appointmentData),
             });
 
             if (!response.ok) {
@@ -355,26 +504,72 @@ export default function AppointmentForm() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     {t('Heure *')}
                                 </label>
-                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-                                    {timeSlots.map((slot) => (
-                                        <button
-                                            key={slot}
-                                            type="button"
-                                            onClick={() => handleTimeSlotClick(slot)}
-                                            className={`py-2 px-3 rounded-lg border transition-colors ${
-                                                formData.time === slot
-                                                    ? 'bg-atoll-500 text-white border-atoll-600'
-                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                                            }`}
+                                {loadingSlots ? (
+                                    <div className="flex items-center justify-center py-4">
+                                        <svg
+                                            className="animate-spin h-5 w-5 text-atoll-500 mr-2"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
                                         >
-                                            {slot}
-                                        </button>
-                                    ))}
-                                </div>
-                                {formData.time && (
-                                    <p className="mt-2 text-sm text-gray-500">
-                                        {t('Heure sélectionnée')}: {formData.time}
-                                    </p>
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
+                                        </svg>
+                                        <span>Chargement des créneaux disponibles...</span>
+                                    </div>
+                                ) : availableTimeSlots.length > 0 ? (
+                                    <>
+                                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                                            {availableTimeSlots.map((slot) => {
+                                                const taken = isSlotTaken(slot);
+                                                return (
+                                                    <button
+                                                        key={slot}
+                                                        type="button"
+                                                        onClick={() => handleTimeSlotClick(slot)}
+                                                        disabled={taken}
+                                                        className={`py-2 px-3 rounded-lg border transition-colors ${
+                                                            taken
+                                                                ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+                                                                : formData.time === slot
+                                                                    ? 'bg-atoll-500 text-white border-atoll-600'
+                                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                        }`}
+                                                    >
+                                                        {slot}
+                                                        {taken && (
+                                                            <span className="ml-1 text-xs">
+                                                                ✕
+                                                            </span>
+                                                        )}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                        {formData.date && takenTimeSlots.length > 0 && (
+                                            <p className="mt-2 text-sm text-gray-500">
+                                                {t('Créneaux grisés: déjà réservés')}
+                                            </p>
+                                        )}
+                                        {formData.time && (
+                                            <p className="mt-2 text-sm text-gray-500">
+                                                {t('Heure sélectionnée')}: {formData.time}
+                                            </p>
+                                        )}
+                                    </>
+                                ) : (
+                                    <p className="text-red-500">Aucun créneau disponible pour le moment</p>
                                 )}
                             </motion.div>
 
@@ -400,9 +595,9 @@ export default function AppointmentForm() {
                         <motion.div variants={itemVariants} className="mt-8 flex justify-center">
                             <button
                                 type="submit"
-                                disabled={submitting || !formData.time}
+                                disabled={submitting || !formData.time || loadingSlots}
                                 className={`px-8 py-3 rounded-lg text-white font-medium transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-atoll-600 to-atoll-800 hover:from-atoll-700 hover:to-atoll-900 ${
-                                    submitting || !formData.time ? 'opacity-75 cursor-not-allowed' : ''
+                                    submitting || !formData.time || loadingSlots ? 'opacity-75 cursor-not-allowed' : ''
                                 }`}
                             >
                                 {submitting ? (

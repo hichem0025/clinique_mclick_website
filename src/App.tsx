@@ -10,6 +10,7 @@ import ServicesSection from "./components/ServicesSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import AppointmentForm from "./components/AppointmentForm";
+import ServiceDetail from "./components/ServiceDetail";
 import './App.css';
 
 // Main page component that combines all sections
@@ -48,6 +49,19 @@ function AppointmentPage() {
     );
 }
 
+// Service detail page wrapper (ensures scrolling to top)
+function ServiceDetailPage() {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    return (
+        <div className="overflow-x-hidden">
+            <ServiceDetail />
+        </div>
+    );
+}
+
 function App() {
     return (
         <Router>
@@ -55,6 +69,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/rendez-vous" element={<AppointmentPage />} />
+                <Route path="/services/:serviceTag" element={<ServiceDetailPage />} />
             </Routes>
             <Footer />
         </Router>
